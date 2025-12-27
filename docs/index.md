@@ -39,10 +39,10 @@ FormLib 的目标是帮助开发者快速创建美观、易用的表单界面，
 
 ```html
 <!-- 引入 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.example.com/formlib/latest/formlib.css">
+<link rel="stylesheet" href="https://aftreecn.github.io/formlib/css/formlib.css">
 
 <!-- 引入 JavaScript 文件 -->
-<script src="https://cdn.example.com/formlib/latest/formlib.js"></script>
+<script src="https://aftreecn.github.io/formlib/js/formlib.js"></script>
 ```
 
 ### 本地安装
