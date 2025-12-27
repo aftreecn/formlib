@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormLib - 美化表单元素库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- FormLib CSS -->
+    <link rel="stylesheet" href="css/formlib.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        warning: '#f59e0b',
+                        info: '#06b6d4',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .demo-section {
+                @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8;
+            }
+            
+            .demo-title {
+                @apply text-xl font-bold mb-4 text-gray-800 dark:text-white;
+            }
+            
+            .demo-description {
+                @apply text-gray-600 dark:text-gray-300 mb-4;
+            }
+            
+            .demo-code {
+                @apply bg-gray-100 dark:bg-gray-900 p-4 rounded-md text-sm overflow-x-auto mb-4;
+            }
+            
+            .demo-preview {
+                @apply p-4 bg-gray-50 dark:bg-gray-700 rounded-md mb-4;
+            }
+            
+            .nav-link {
+                @apply block px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors;
+            }
+            
+            .nav-link.active {
+                @apply bg-primary text-white dark:bg-primary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
+    <!-- 顶部导航 -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-code text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold">FormLib</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" data-formlib="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fa fa-moon-o dark:hidden"></i>
+                    <i class="fa fa-sun-o hidden dark:block"></i>
+                </button>
+                <a href="docs/index.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+                    <i class="fa fa-book mr-2"></i>文档
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧导航 -->
+            <aside class="lg:w-64 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 h-fit sticky top-24">
+                <nav>
+                    <ul class="space-y-2">
+                        <li><a href="#intro" class="nav-link active">简介</a></li>
+                        <li><a href="#installation" class="nav-link">安装</a></li>
+                        <li><a href="#inputs" class="nav-link">输入框</a></li>
+                        <li><a href="#buttons" class="nav-link">按钮</a></li>
+                        <li><a href="#dialogs" class="nav-link">对话框</a></li>
+                        <li><a href="#colorpicker" class="nav-link">颜色选择器</a></li>
+                        <li><a href="#form-validation" class="nav-link">表单验证</a></li>
+                        <li><a href="#themes" class="nav-link">主题</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- 右侧内容 -->
+            <main class="flex-1">
+                <!-- 简介 -->
+                <section id="intro" class="demo-section">
+                    <h2 class="demo-title">FormLib 简介</h2>
+                    <p class="demo-description">
+                        FormLib 是一个轻量级的表单元素美化库，提供了比浏览器原生组件更美观、更易用的表单元素。
+                        包含输入框、按钮、对话框、颜色选择器等组件，支持亮色/暗色主题切换，响应式设计适配各种屏幕尺寸。
+                    </p>
+                    <div class="demo-preview">
+                        <div class="flex flex-wrap gap-4 justify-center">
+                            <div class="text-center">
+                                <div class="w-16 h-16 mx-auto bg-primary rounded-lg flex items-center justify-center text-white text-2xl mb-2">
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                                <p class="text-sm">美观输入框</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 mx-auto bg-success rounded-lg flex items-center justify-center text-white text-2xl mb-2">
+                                    <i class="fa fa-check-circle"></i>
+                                </div>
+                                <p class="text-sm">自定义按钮</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 mx-auto bg-warning rounded-lg flex items-center justify-center text-white text-2xl mb-2">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                </div>
+                                <p class="text-sm">对话框</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 mx-auto bg-info rounded-lg flex items-center justify-center text-white text-2xl mb-2">
+                                    <i class="fa fa-eyedropper"></i>
+                                </div>
+                                <p class="text-sm">颜色选择器</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 mx-auto bg-secondary rounded-lg flex items-center justify-center text-white text-2xl mb-2">
+                                    <i class="fa fa-moon-o"></i>
+                                </div>
+                                <p class="text-sm">主题切换</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 安装 -->
+                <section id="installation" class="demo-section">
+                    <h2 class="demo-title">安装使用</h2>
+                    <p class="demo-description">
+                        只需引入 CSS 和 JavaScript 文件即可开始使用 FormLib。
+                    </p>
+                    
+                    <h3 class="text-lg font-semibold mb-2">步骤 1: 引入 CSS 文件</h3>
+                    <div class="demo-code">
+                        <pre><code>&lt;link rel="stylesheet" href="path/to/formlib.css"&gt;</code></pre>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-2">步骤 2: 引入 JavaScript 文件</h3>
+                    <div class="demo-code">
+                        <pre><code>&lt;script src="path/to/formlib.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-2">步骤 3: 开始使用</h3>
+                    <p class="demo-description">
+                        FormLib 会在 DOM 加载完成后自动初始化。你可以直接使用预设的 CSS 类名来应用样式。
+                    </p>
+                </section>
+
+                <!-- 输入框 -->
+                <section id="inputs" class="demo-section">
+                    <h2 class="demo-title">输入框组件</h2>
+                    <p class="demo-description">
+                        美观的输入框组件，支持各种状态和样式。
+                    </p>
+                    
+                    <div class="demo-preview">
+                        <div class="space-y-4">
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="input-demo">基本输入框</label>
+                                <input type="text" id="input-demo" class="formlib-input" placeholder="请输入内容...">
+                                <div class="formlib-input-hint">这是一个提示信息</div>
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="input-success">成功状态</label>
+                                <input type="text" id="input-success" class="formlib-input success" value="验证通过" placeholder="请输入内容...">
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="input-error">错误状态</label>
+                                <input type="text" id="input-error" class="formlib-input error" placeholder="请输入内容...">
+                                <div class="formlib-input-error">输入格式不正确</div>
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="input-disabled">禁用状态</label>
+                                <input type="text" id="input-disabled" class="formlib-input" disabled value="禁用状态" placeholder="请输入内容...">
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="input-password">密码输入框</label>
+                                <input type="password" id="input-password" class="formlib-input" placeholder="请输入密码...">
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="input-number">数字输入框</label>
+                                <input type="number" id="input-number" class="formlib-input" placeholder="请输入数字...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-code">
+                        <pre><code>&lt;div class="formlib-input-group"&gt;
+    &lt;label class="formlib-input-label" for="input-id"&gt;标签文本&lt;/label&gt;
+    &lt;input type="text" id="input-id" class="formlib-input" placeholder="请输入内容..."&gt;
+    &lt;div class="formlib-input-hint"&gt;提示信息&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- 按钮 -->
+                <section id="buttons" class="demo-section">
+                    <h2 class="demo-title">按钮组件</h2>
+                    <p class="demo-description">
+                        多样化的按钮样式，支持各种颜色和尺寸。
+                    </p>
+                    
+                    <div class="demo-preview">
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap gap-2">
+                                <button class="formlib-btn">默认按钮</button>
+                                <button class="formlib-btn formlib-btn-primary">主要按钮</button>
+                                <button class="formlib-btn formlib-btn-secondary">次要按钮</button>
+                                <button class="formlib-btn formlib-btn-success">成功按钮</button>
+                                <button class="formlib-btn formlib-btn-danger">危险按钮</button>
+                                <button class="formlib-btn formlib-btn-warning">警告按钮</button>
+                                <button class="formlib-btn formlib-btn-info">信息按钮</button>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                <button class="formlib-btn formlib-btn-sm">小按钮</button>
+                                <button class="formlib-btn">默认按钮</button>
+                                <button class="formlib-btn formlib-btn-lg">大按钮</button>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                <button class="formlib-btn" disabled>禁用按钮</button>
+                                <button class="formlib-btn formlib-btn-primary" disabled>禁用主要按钮</button>
+                            </div>
+                            
+                            <div>
+                                <button class="formlib-btn formlib-btn-block">块级按钮</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-code">
+                        <pre><code>&lt;!-- 基本按钮 --&gt;
+&lt;button class="formlib-btn"&gt;默认按钮&lt;/button&gt;
+
+&lt;!-- 主要按钮 --&gt;
+&lt;button class="formlib-btn formlib-btn-primary"&gt;主要按钮&lt;/button&gt;
+
+&lt;!-- 尺寸变体 --&gt;
+&lt;button class="formlib-btn formlib-btn-sm"&gt;小按钮&lt;/button&gt;
+&lt;button class="formlib-btn formlib-btn-lg"&gt;大按钮&lt;/button&gt;
+
+&lt;!-- 块级按钮 --&gt;
+&lt;button class="formlib-btn formlib-btn-block"&gt;块级按钮&lt;/button&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- 对话框 -->
+                <section id="dialogs" class="demo-section">
+                    <h2 class="demo-title">对话框组件</h2>
+                    <p class="demo-description">
+                        自定义的确认/取消对话框，支持自定义标题、消息和按钮文本。
+                    </p>
+                    
+                    <div class="demo-preview">
+                        <div class="flex flex-wrap gap-2">
+                            <button id="show-alert" class="formlib-btn formlib-btn-primary">
+                                <i class="fa fa-info-circle mr-2"></i>显示提示框
+                            </button>
+                            <button id="show-confirm" class="formlib-btn formlib-btn-warning">
+                                <i class="fa fa-question-circle mr-2"></i>显示确认框
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-code">
+                        <pre><code>&lt;!-- 提示对话框 --&gt;
+&lt;script&gt;
+document.getElementById('show-alert').addEventListener('click', function() {
+    FormLib.Dialog.alert({
+        title: '提示信息',
+        message: '这是一个提示对话框，用于显示重要信息。',
+        buttonText: '我知道了',
+        onClose: function() {
+            console.log('对话框已关闭');
+        }
+    });
+});
+&lt;/script&gt;
+
+&lt;!-- 确认对话框 --&gt;
+&lt;script&gt;
+document.getElementById('show-confirm').addEventListener('click', function() {
+    FormLib.Dialog.confirm({
+        title: '确认操作',
+        message: '您确定要执行此操作吗？此操作不可撤销。',
+        confirmText: '确定',
+        cancelText: '取消',
+        onConfirm: function() {
+            console.log('用户点击了确定');
+            FormLib.Dialog.alert({
+                title: '操作成功',
+                message: '您的操作已成功执行！'
+            });
+        },
+        onCancel: function() {
+            console.log('用户点击了取消');
+        }
+    });
+});
+&lt;/script&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- 颜色选择器 -->
+                <section id="colorpicker" class="demo-section">
+                    <h2 class="demo-title">颜色选择器组件</h2>
+                    <p class="demo-description">
+                        提供简单版和专业版两种颜色选择器，满足不同场景需求。
+                    </p>
+                    
+                    <div class="demo-preview">
+                        <div class="space-y-8">
+                            <!-- 简单版颜色选择器 -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">简单版颜色选择器</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                                    适合快速选择预设颜色，界面简洁易用。
+                                </p>
+                                <div class="flex items-center gap-4">
+                                    <div id="colorpicker-simple" data-formlib="colorpicker" data-default-color="#3b82f6"></div>
+                                    <div id="color-value-simple" class="text-sm font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                                        当前颜色: #3B82F6
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 专业版颜色选择器 -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">专业版颜色选择器</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                                    提供专业级颜色选择体验，包含交互式色轮、色盘、HSL滑块和颜色信息显示。
+                                </p>
+                                <div class="flex items-center gap-4">
+                                    <div id="colorpicker-professional"></div>
+                                    <div id="color-value-professional" class="text-sm font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                                        当前颜色: #3B82F6
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 应用颜色按钮 -->
+                            <div class="flex flex-wrap gap-4">
+                                <button id="apply-color-simple" class="formlib-btn formlib-btn-primary">
+                                    <i class="fa fa-paint-brush mr-2"></i>应用简单版选中颜色
+                                </button>
+                                <button id="apply-color-professional" class="formlib-btn formlib-btn-success">
+                                    <i class="fa fa-paint-brush mr-2"></i>应用专业版选中颜色
+                                </button>
+                                <button id="compare-colors" class="formlib-btn formlib-btn-info">
+                                    <i class="fa fa-exchange mr-2"></i>对比两个颜色
+                                </button>
+                            </div>
+                            
+                            <!-- 颜色预览区域 -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                    <h4 class="font-medium mb-2">简单版颜色预览</h4>
+                                    <div id="preview-simple" class="w-full h-24 rounded-md" style="background-color: #3b82f6;"></div>
+                                </div>
+                                <div class="p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                    <h4 class="font-medium mb-2">专业版颜色预览</h4>
+                                    <div id="preview-professional" class="w-full h-24 rounded-md" style="background-color: #3b82f6;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-code">
+                        <pre><code>&lt;!-- 简单版颜色选择器 --&gt;
+&lt;div id="colorpicker-simple" data-formlib="colorpicker" data-default-color="#3b82f6"&gt;&lt;/div&gt;
+
+&lt;!-- 专业版颜色选择器 --&gt;
+&lt;div id="colorpicker-professional"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+// 简单版颜色选择器（自动初始化）
+document.addEventListener('DOMContentLoaded', function() {
+    // 手动初始化专业版颜色选择器
+    const professionalColorpicker = FormLib.ColorPicker.init(
+        document.getElementById('colorpicker-professional'),
+        {
+            mode: 'professional',
+            defaultColor: '#3b82f6',
+            onChange: function(color, isCustom) {
+                console.log('专业版选择的颜色:', color);
+                console.log('是否自定义颜色:', isCustom);
+                
+                // 更新显示
+                document.getElementById('color-value-professional').textContent = '当前颜色: ' + color.toUpperCase();
+                document.getElementById('preview-professional').style.backgroundColor = color;
+            }
+        }
+    );
+    
+    // 简单版颜色选择器事件监听
+    const simpleColorpicker = FormLib.ColorPicker.init(
+        document.getElementById('colorpicker-simple'),
+        {
+            mode: 'simple',
+            defaultColor: '#3b82f6',
+            onChange: function(color, isCustom) {
+                console.log('简单版选择的颜色:', color);
+                console.log('是否自定义颜色:', isCustom);
+                
+                // 更新显示
+                document.getElementById('color-value-simple').textContent = '当前颜色: ' + color.toUpperCase();
+                document.getElementById('preview-simple').style.backgroundColor = color;
+            }
+        }
+    );
+    
+    // 应用简单版颜色按钮
+    document.getElementById('apply-color-simple').addEventListener('click', function() {
+        const color = simpleColorpicker.getColor();
+        
+        FormLib.Dialog.alert({
+            title: '颜色已应用',
+            message: '您选择的简单版颜色 ' + color + ' 已应用！',
+            buttonText: '太棒了'
+        });
+    });
+    
+    // 应用专业版颜色按钮
+    document.getElementById('apply-color-professional').addEventListener('click', function() {
+        const color = professionalColorpicker.getColor();
+        
+        FormLib.Dialog.alert({
+            title: '颜色已应用',
+            message: '您选择的专业版颜色 ' + color + ' 已应用！',
+            buttonText: '太棒了'
+        });
+    });
+    
+    // 对比颜色按钮
+    document.getElementById('compare-colors').addEventListener('click', function() {
+        const simpleColor = simpleColorpicker.getColor();
+        const professionalColor = professionalColorpicker.getColor();
+        
+        FormLib.Dialog.confirm({
+            title: '颜色对比',
+            message: `简单版颜色: ${simpleColor}<br>专业版颜色: ${professionalColor}<br><br>两个颜色${simpleColor === professionalColor ? '相同' : '不同'}`,
+            confirmText: '确定',
+            cancelText: '取消'
+        });
+    });
+});
+&lt;/script&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- 表单验证 -->
+                <section id="form-validation" class="demo-section">
+                    <h2 class="demo-title">表单验证</h2>
+                    <p class="demo-description">
+                        强大的表单验证功能，支持各种验证规则和实时反馈。
+                    </p>
+                    
+                    <div class="demo-preview">
+                        <form id="validation-form" data-formlib="form" class="space-y-4">
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="username">用户名</label>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username"
+                                    class="formlib-input" 
+                                    placeholder="请输入用户名"
+                                    data-required
+                                    data-minlength="3"
+                                    data-maxlength="20"
+                                    data-required-message="用户名不能为空"
+                                    data-minlength-message="用户名至少需要3个字符"
+                                    data-maxlength-message="用户名最多允许20个字符"
+                                >
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="email">邮箱地址</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email"
+                                    class="formlib-input" 
+                                    placeholder="请输入邮箱地址"
+                                    data-required
+                                    data-email
+                                    data-required-message="邮箱地址不能为空"
+                                    data-email-message="请输入有效的邮箱地址"
+                                >
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="password">密码</label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password"
+                                    class="formlib-input" 
+                                    placeholder="请输入密码"
+                                    data-required
+                                    data-minlength="6"
+                                    data-required-message="密码不能为空"
+                                    data-minlength-message="密码至少需要6个字符"
+                                >
+                            </div>
+                            
+                            <div class="formlib-input-group">
+                                <label class="formlib-input-label" for="age">年龄</label>
+                                <input 
+                                    type="number" 
+                                    id="age" 
+                                    name="age"
+                                    class="formlib-input" 
+                                    placeholder="请输入年龄"
+                                    data-required
+                                    data-min="18"
+                                    data-max="120"
+                                    data-required-message="年龄不能为空"
+                                    data-min-message="年龄必须大于18岁"
+                                    data-max-message="年龄不能超过120岁"
+                                >
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button type="submit" class="formlib-btn formlib-btn-primary">
+                                    <i class="fa fa-check mr-2"></i>提交表单
+                                </button>
+                                <button type="reset" class="formlib-btn formlib-btn-secondary">
+                                    <i class="fa fa-refresh mr-2"></i>重置
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="demo-code">
+                        <pre><code>&lt;!-- HTML --&gt;
+&lt;form id="validation-form" data-formlib="form"&gt;
+    &lt;div class="formlib-input-group"&gt;
+        &lt;label class="formlib-input-label" for="username"&gt;用户名&lt;/label&gt;
+        &lt;input 
+            type="text" 
+            id="username" 
+            name="username"
+            class="formlib-input" 
+            data-required
+            data-minlength="3"
+            data-maxlength="20"
+        &gt;
+    &lt;/div&gt;
+    
+    &lt;button type="submit" class="formlib-btn formlib-btn-primary"&gt;提交表单&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;!-- JavaScript --&gt;
+&lt;script&gt;
+// 手动初始化表单验证
+const validator = FormLib.FormValidator.init(document.getElementById('validation-form'), {
+    validateOnBlur: true,  // 失去焦点时验证
+    validateOnChange: false, // 值改变时验证
+    onSubmit: function(isValid, form, fields) {
+        console.log('表单提交', { isValid, form, fields });
+    },
+    onSuccess: function(form) {
+        console.log('表单验证成功，可以提交数据');
+        
+        // 模拟表单提交
+        FormLib.Dialog.alert({
+            title: '提交成功',
+            message: '您的表单已成功提交！',
+            onClose: function() {
+                form.reset();
+            }
+        });
+    },
+    onError: function(form, fields) {
+        console.log('表单验证失败', fields);
+    }
+});
+&lt;/script&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- 主题 -->
+                <section id="themes" class="demo-section">
+                    <h2 class="demo-title">主题系统</h2>
+                    <p class="demo-description">
+                        支持亮色和暗色主题，可自动根据系统偏好设置，也可手动切换。
+                    </p>
+                    
+                    <div class="demo-preview">
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap gap-2">
+                                <button id="theme-light" class="formlib-btn">
+                                    <i class="fa fa-sun-o mr-2"></i>亮色主题
+                                </button>
+                                <button id="theme-dark" class="formlib-btn">
+                                    <i class="fa fa-moon-o mr-2"></i>暗色主题
+                                </button>
+                                <button id="theme-auto" class="formlib-btn formlib-btn-primary">
+                                    <i class="fa fa-refresh mr-2"></i>跟随系统
+                                </button>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-md">
+                                <h4 class="font-semibold mb-2">当前主题信息</h4>
+                                <div id="theme-info" class="text-sm">
+                                    <p>当前主题: <span id="current-theme">亮色</span></p>
+                                    <p>系统偏好: <span id="system-theme">检测中...</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-code">
+                        <pre><code>&lt;!-- 主题切换按钮 --&gt;
+&lt;button id="theme-toggle" data-formlib="theme-toggle"&gt;
+    &lt;i class="fa fa-moon-o dark:hidden"&gt;&lt;/i&gt;
+    &lt;i class="fa fa-sun-o hidden dark:block"&gt;&lt;/i&gt;
+&lt;/button&gt;
+
+&lt;!-- JavaScript --&gt;
+&lt;script&gt;
+// 设置亮色主题
+document.getElementById('theme-light').addEventListener('click', function() {
+    FormLib.Theme.setTheme('light');
+    updateThemeInfo();
+});
+
+// 设置暗色主题
+document.getElementById('theme-dark').addEventListener('click', function() {
+    FormLib.Theme.setTheme('dark');
+    updateThemeInfo();
+});
+
+// 跟随系统
+document.getElementById('theme-auto').addEventListener('click', function() {
+    localStorage.removeItem('formlib-theme');
+    FormLib.Theme.init();
+    updateThemeInfo();
+});
+
+// 更新主题信息显示
+function updateThemeInfo() {
+    const currentTheme = FormLib.Theme.getTheme();
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    document.getElementById('current-theme').textContent = currentTheme === 'dark' ? '暗色' : '亮色';
+    document.getElementById('system-theme').textContent = systemPrefersDark ? '暗色' : '亮色';
+}
+
+// 监听系统主题变化
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem('formlib-theme')) {
+        FormLib.Theme.init();
+        updateThemeInfo();
+    }
+});
+
+// 初始化
+updateThemeInfo();
+&lt;/script&gt;</code></pre>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-white dark:bg-gray-800 mt-12 py-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <i class="fa fa-code text-primary text-2xl"></i>
+                <h2 class="text-xl font-bold">FormLib</h2>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+                轻量级表单元素美化库，让你的表单更美观、更易用
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary">
+                    <i class="fa fa-github text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary">
+                    <i class="fa fa-twitter text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary">
+                    <i class="fa fa-linkedin text-xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 dark:text-gray-500 mt-4 text-sm">
+                &copy; 2024 FormLib. 保留所有权利。
+            </p>
+        </div>
+    </footer>
+
+    <!-- FormLib JavaScript -->
+    <script src="js/formlib.js"></script>
+    
+    <!-- 示例页面脚本 -->
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 导航链接高亮
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            
+            function updateActiveLink() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+            
+            // 平滑滚动
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 对话框示例
+            document.getElementById('show-alert').addEventListener('click', function() {
+                FormLib.Dialog.alert({
+                    title: '提示信息',
+                    message: '这是一个提示对话框，用于显示重要信息。',
+                    buttonText: '我知道了',
+                    onClose: function() {
+                        console.log('对话框已关闭');
+                    }
+                });
+            });
+            
+            document.getElementById('show-confirm').addEventListener('click', function() {
+                FormLib.Dialog.confirm({
+                    title: '确认操作',
+                    message: '您确定要执行此操作吗？此操作不可撤销。',
+                    confirmText: '确定',
+                    cancelText: '取消',
+                    onConfirm: function() {
+                        console.log('用户点击了确定');
+                        FormLib.Dialog.alert({
+                            title: '操作成功',
+                            message: '您的操作已成功执行！'
+                        });
+                    },
+                    onCancel: function() {
+                        console.log('用户点击了取消');
+                    }
+                });
+            });
+            
+            // 颜色选择器示例
+            const colorpicker = FormLib.ColorPicker.init(document.getElementById('colorpicker-demo'), {
+                defaultColor: '#3b82f6',
+                onChange: function(color, isCustom) {
+                    console.log('选择的颜色:', color);
+                    console.log('是否自定义颜色:', isCustom);
+                    
+                    // 更新显示
+                    document.getElementById('color-value').textContent = '当前颜色: ' + color;
+                }
+            });
+            
+            document.getElementById('apply-color').addEventListener('click', function() {
+                const color = colorpicker.getColor();
+                
+                // 创建一个临时样式元素来应用颜色
+                let styleElement = document.getElementById('dynamic-theme');
+                if (!styleElement) {
+                    styleElement = document.createElement('style');
+                    styleElement.id = 'dynamic-theme';
+                    document.head.appendChild(styleElement);
+                }
+                
+                styleElement.textContent = `
+                    :root {
+                        --dynamic-color: ${color};
+                    }
+                    .formlib-btn-primary,
+                    .formlib-btn-success,
+                    .formlib-btn-danger,
+                    .formlib-btn-warning,
+                    .formlib-btn-info {
+                        background-color: var(--dynamic-color) !important;
+                        border-color: var(--dynamic-color) !important;
+                    }
+                `;
+                
+                FormLib.Dialog.alert({
+                    title: '颜色已应用',
+                    message: '您选择的颜色 ' + color + ' 已应用到按钮！',
+                    buttonText: '太棒了'
+                });
+            });
+            
+            // 表单验证示例
+            const validator = FormLib.FormValidator.init(document.getElementById('validation-form'), {
+                validateOnBlur: true,
+                validateOnChange: false,
+                onSubmit: function(isValid, form, fields) {
+                    console.log('表单提交', { isValid, form, fields });
+                },
+                onSuccess: function(form) {
+                    console.log('表单验证成功，可以提交数据');
+                    
+                    // 模拟表单提交
+                    FormLib.Dialog.alert({
+                        title: '提交成功',
+                        message: '您的表单已成功提交！',
+                        onClose: function() {
+                            form.reset();
+                        }
+                    });
+                },
+                onError: function(form, fields) {
+                    console.log('表单验证失败', fields);
+                }
+            });
+            
+            // 主题切换示例
+            document.getElementById('theme-light').addEventListener('click', function() {
+                FormLib.Theme.setTheme('light');
+                updateThemeInfo();
+            });
+            
+            document.getElementById('theme-dark').addEventListener('click', function() {
+                FormLib.Theme.setTheme('dark');
+                updateThemeInfo();
+            });
+            
+            document.getElementById('theme-auto').addEventListener('click', function() {
+                localStorage.removeItem('formlib-theme');
+                FormLib.Theme.init();
+                updateThemeInfo();
+            });
+            
+            function updateThemeInfo() {
+                const currentTheme = FormLib.Theme.getTheme();
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                document.getElementById('current-theme').textContent = currentTheme === 'dark' ? '暗色' : '亮色';
+                document.getElementById('system-theme').textContent = systemPrefersDark ? '暗色' : '亮色';
+            }
+            
+            // 监听系统主题变化
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('formlib-theme')) {
+                    FormLib.Theme.init();
+                    updateThemeInfo();
+                }
+            });
+            
+            // 初始化主题信息
+            updateThemeInfo();
+        });
+    </script>
+</body>
+</html>

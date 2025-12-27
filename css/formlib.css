@@ -1,0 +1,819 @@
+/* FormLib - 美化表单元素库
+ * 版本: 1.0.0
+ * 作者: FormLib Team
+ * 许可证: MIT
+ */
+
+/* 全局样式重置 */
+.formlib * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 主题变量 */
+:root {
+    /* 亮色主题 */
+    --formlib-primary: #3b82f6;
+    --formlib-primary-hover: #2563eb;
+    --formlib-secondary: #64748b;
+    --formlib-success: #10b981;
+    --formlib-danger: #ef4444;
+    --formlib-warning: #f59e0b;
+    --formlib-info: #06b6d4;
+    
+    --formlib-bg: #ffffff;
+    --formlib-bg-secondary: #f8fafc;
+    --formlib-text: #1e293b;
+    --formlib-text-secondary: #64748b;
+    --formlib-border: #e2e8f0;
+    --formlib-border-focus: #3b82f6;
+    
+    --formlib-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --formlib-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    --formlib-radius: 6px;
+    --formlib-radius-lg: 8px;
+    
+    --formlib-transition: all 0.2s ease-in-out;
+}
+
+/* 暗色主题 */
+.formlib-dark {
+    --formlib-primary: #60a5fa;
+    --formlib-primary-hover: #3b82f6;
+    --formlib-secondary: #94a3b8;
+    --formlib-success: #34d399;
+    --formlib-danger: #f87171;
+    --formlib-warning: #fbbf24;
+    --formlib-info: #22d3ee;
+    
+    --formlib-bg: #1e293b;
+    --formlib-bg-secondary: #334155;
+    --formlib-text: #f1f5f9;
+    --formlib-text-secondary: #94a3b8;
+    --formlib-border: #475569;
+    --formlib-border-focus: #60a5fa;
+    
+    --formlib-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --formlib-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* 输入框基础样式 */
+.formlib-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--formlib-text);
+    background-color: var(--formlib-bg);
+    border: 2px solid var(--formlib-border);
+    border-radius: var(--formlib-radius);
+    transition: var(--formlib-transition);
+    outline: none;
+}
+
+/* 输入框焦点样式 */
+.formlib-input:focus {
+    border-color: var(--formlib-border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 输入框悬停样式 */
+.formlib-input:hover:not(:focus) {
+    border-color: var(--formlib-secondary);
+}
+
+/* 输入框错误样式 */
+.formlib-input.error {
+    border-color: var(--formlib-danger);
+}
+
+.formlib-input.error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* 输入框成功样式 */
+.formlib-input.success {
+    border-color: var(--formlib-success);
+}
+
+.formlib-input.success:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* 输入框禁用样式 */
+.formlib-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--formlib-bg-secondary);
+}
+
+/* 输入框组 */
+.formlib-input-group {
+    margin-bottom: 16px;
+}
+
+.formlib-input-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--formlib-text);
+}
+
+.formlib-input-hint {
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--formlib-text-secondary);
+}
+
+.formlib-input-error {
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--formlib-danger);
+}
+
+/* 按钮基础样式 */
+.formlib-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--formlib-text);
+    background-color: var(--formlib-bg);
+    border: 2px solid var(--formlib-border);
+    border-radius: var(--formlib-radius);
+    cursor: pointer;
+    transition: var(--formlib-transition);
+    outline: none;
+    text-decoration: none;
+}
+
+/* 按钮悬停样式 */
+.formlib-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--formlib-shadow);
+}
+
+/* 按钮点击样式 */
+.formlib-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* 按钮焦点样式 */
+.formlib-btn:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 按钮禁用样式 */
+.formlib-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 主要按钮 */
+.formlib-btn-primary {
+    color: white;
+    background-color: var(--formlib-primary);
+    border-color: var(--formlib-primary);
+}
+
+.formlib-btn-primary:hover:not(:disabled) {
+    background-color: var(--formlib-primary-hover);
+    border-color: var(--formlib-primary-hover);
+}
+
+/* 次要按钮 */
+.formlib-btn-secondary {
+    color: var(--formlib-text);
+    background-color: var(--formlib-bg-secondary);
+    border-color: var(--formlib-border);
+}
+
+/* 成功按钮 */
+.formlib-btn-success {
+    color: white;
+    background-color: var(--formlib-success);
+    border-color: var(--formlib-success);
+}
+
+/* 危险按钮 */
+.formlib-btn-danger {
+    color: white;
+    background-color: var(--formlib-danger);
+    border-color: var(--formlib-danger);
+}
+
+/* 警告按钮 */
+.formlib-btn-warning {
+    color: white;
+    background-color: var(--formlib-warning);
+    border-color: var(--formlib-warning);
+}
+
+/* 信息按钮 */
+.formlib-btn-info {
+    color: white;
+    background-color: var(--formlib-info);
+    border-color: var(--formlib-info);
+}
+
+/* 按钮尺寸 */
+.formlib-btn-sm {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.formlib-btn-lg {
+    padding: 12px 24px;
+    font-size: 18px;
+}
+
+/* 按钮块级 */
+.formlib-btn-block {
+    display: flex;
+    width: 100%;
+}
+
+/* 对话框背景 */
+.formlib-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--formlib-transition);
+}
+
+.formlib-modal-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 对话框容器 */
+.formlib-modal {
+    background-color: var(--formlib-bg);
+    border-radius: var(--formlib-radius-lg);
+    box-shadow: var(--formlib-shadow-lg);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: var(--formlib-transition);
+}
+
+.formlib-modal-backdrop.show .formlib-modal {
+    transform: scale(1);
+}
+
+/* 对话框头部 */
+.formlib-modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--formlib-border);
+}
+
+.formlib-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--formlib-text);
+}
+
+/* 对话框内容 */
+.formlib-modal-body {
+    padding: 20px 24px;
+    color: var(--formlib-text);
+}
+
+/* 对话框底部 */
+.formlib-modal-footer {
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--formlib-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* 颜色选择器 */
+.formlib-colorpicker {
+    position: relative;
+    display: inline-block;
+}
+
+.formlib-colorpicker-button {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--formlib-border);
+    border-radius: var(--formlib-radius);
+    cursor: pointer;
+    transition: var(--formlib-transition);
+    overflow: hidden;
+    position: relative;
+}
+
+.formlib-colorpicker-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #ccc 75%), 
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    z-index: 0;
+}
+
+.formlib-colorpicker-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.formlib-colorpicker-button:hover {
+    border-color: var(--formlib-primary);
+    transform: scale(1.05);
+}
+
+.formlib-colorpicker-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--formlib-bg);
+    border: 1px solid var(--formlib-border);
+    border-radius: var(--formlib-radius);
+    box-shadow: var(--formlib-shadow-lg);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: var(--formlib-transition);
+    min-width: 280px;
+}
+
+/* 简单模式面板 */
+.formlib-colorpicker-simple .formlib-colorpicker-panel {
+    padding: 16px;
+}
+
+/* 专业模式面板 */
+.formlib-colorpicker-professional .formlib-colorpicker-panel {
+    padding: 0;
+    width: 420px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.formlib-colorpicker.show .formlib-colorpicker-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* 颜色选择器内容容器 */
+.formlib-colorpicker-content {
+    width: 100%;
+}
+
+/* 颜色选择器区域 */
+.formlib-colorpicker-section {
+    padding: 16px;
+    border-bottom: 1px solid var(--formlib-border);
+}
+
+.formlib-colorpicker-section:last-child {
+    border-bottom: none;
+}
+
+/* 区域标题 */
+.formlib-colorpicker-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--formlib-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+/* 颜色网格 */
+.formlib-colorgrid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+/* 最近使用的颜色网格 */
+.formlib-colorgrid-recent {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.formlib-coloritem {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--formlib-transition);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.formlib-coloritem::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #ccc 75%), 
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 6px 6px;
+    background-position: 0 0, 0 3px, 3px -3px, -3px 0px;
+    z-index: 0;
+}
+
+.formlib-coloritem::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.formlib-coloritem:hover {
+    transform: scale(1.1);
+    border-color: var(--formlib-text);
+}
+
+.formlib-coloritem.active {
+    border-color: var(--formlib-text);
+    box-shadow: 0 0 0 2px var(--formlib-bg);
+}
+
+/* 自定义颜色输入 */
+.formlib-colorcustom {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.formlib-colorinput {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: monospace;
+    color: var(--formlib-text);
+    background-color: var(--formlib-bg);
+    border: 1px solid var(--formlib-border);
+    border-radius: var(--formlib-radius);
+    transition: var(--formlib-transition);
+    outline: none;
+}
+
+.formlib-colorinput:focus {
+    border-color: var(--formlib-border-focus);
+}
+
+.formlib-colorpreview {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--formlib-radius);
+    border: 1px solid var(--formlib-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.formlib-colorpreview::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #ccc 75%), 
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    z-index: 0;
+}
+
+.formlib-colorpreview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/* 色轮和色盘容器 */
+.formlib-colorpicker-wheel-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+/* 色轮样式 */
+.formlib-colorpicker-wheel {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.formlib-colorpicker-wheel-canvas {
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid var(--formlib-border);
+}
+
+.formlib-colorpicker-wheel-marker {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--formlib-text);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* 色盘样式 */
+.formlib-colorpicker-plate {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.formlib-colorpicker-plate-canvas {
+    border-radius: var(--formlib-radius);
+    cursor: pointer;
+    border: 1px solid var(--formlib-border);
+}
+
+.formlib-colorpicker-plate-marker {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--formlib-text);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* HSL控件 */
+.formlib-colorpicker-hsl-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.formlib-colorpicker-slider-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.formlib-colorpicker-slider-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--formlib-text);
+    width: 20px;
+    text-align: center;
+}
+
+.formlib-colorpicker-slider-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.formlib-colorpicker-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, 
+        hsl(0, 100%, 50%), 
+        hsl(60, 100%, 50%), 
+        hsl(120, 100%, 50%), 
+        hsl(180, 100%, 50%), 
+        hsl(240, 100%, 50%), 
+        hsl(300, 100%, 50%), 
+        hsl(360, 100%, 50%)
+    );
+    border-radius: 3px;
+    outline: none;
+    transition: var(--formlib-transition);
+}
+
+.formlib-colorpicker-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: var(--formlib-bg);
+    border: 2px solid var(--formlib-border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--formlib-transition);
+}
+
+.formlib-colorpicker-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background-color: var(--formlib-bg);
+    border: 2px solid var(--formlib-border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--formlib-transition);
+}
+
+.formlib-colorpicker-slider:hover::-webkit-slider-thumb {
+    border-color: var(--formlib-primary);
+    transform: scale(1.1);
+}
+
+.formlib-colorpicker-slider:hover::-moz-range-thumb {
+    border-color: var(--formlib-primary);
+    transform: scale(1.1);
+}
+
+/* 饱和度滑块 */
+.formlib-colorpicker-slider-control:nth-child(2) .formlib-colorpicker-slider {
+    background: linear-gradient(to right, 
+        hsl(0, 0%, 50%), 
+        hsl(0, 100%, 50%)
+    );
+}
+
+/* 亮度滑块 */
+.formlib-colorpicker-slider-control:nth-child(3) .formlib-colorpicker-slider {
+    background: linear-gradient(to right, 
+        hsl(0, 100%, 0%), 
+        hsl(0, 100%, 50%), 
+        hsl(0, 100%, 100%)
+    );
+}
+
+.formlib-colorpicker-slider-value {
+    font-size: 12px;
+    color: var(--formlib-text-secondary);
+    min-width: 35px;
+    text-align: right;
+    font-family: monospace;
+}
+
+/* 颜色信息网格 */
+.formlib-colorpicker-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formlib-colorpicker-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--formlib-border);
+}
+
+.formlib-colorpicker-info-item:last-child {
+    border-bottom: none;
+}
+
+.formlib-colorpicker-info-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--formlib-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formlib-colorpicker-info-value {
+    font-size: 12px;
+    color: var(--formlib-text);
+    font-family: monospace;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: var(--formlib-transition);
+    user-select: none;
+}
+
+.formlib-colorpicker-info-value:hover {
+    background-color: var(--formlib-bg-secondary);
+    color: var(--formlib-primary);
+}
+
+.formlib-colorpicker-info-value.copied {
+    background-color: var(--formlib-success);
+    color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .formlib-modal {
+        width: 95%;
+        margin: 0 10px;
+    }
+    
+    .formlib-modal-header,
+    .formlib-modal-body,
+    .formlib-modal-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .formlib-btn-group {
+        flex-direction: column;
+    }
+    
+    .formlib-btn-group .formlib-btn {
+        width: 100%;
+    }
+}
+
+/* 动画效果 */
+@keyframes formlib-fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes formlib-slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.formlib-animate-fadeIn {
+    animation: formlib-fadeIn 0.3s ease-in-out;
+}
+
+.formlib-animate-slideUp {
+    animation: formlib-slideUp 0.3s ease-in-out;
+}
+
+/* 工具类 */
+.formlib-mt-1 { margin-top: 4px; }
+.formlib-mt-2 { margin-top: 8px; }
+.formlib-mt-3 { margin-top: 16px; }
+.formlib-mt-4 { margin-top: 24px; }
+
+.formlib-mb-1 { margin-bottom: 4px; }
+.formlib-mb-2 { margin-bottom: 8px; }
+.formlib-mb-3 { margin-bottom: 16px; }
+.formlib-mb-4 { margin-bottom: 24px; }
+
+.formlib-text-center { text-align: center; }
+.formlib-text-left { text-align: left; }
+.formlib-text-right { text-align: right; }
+
+.formlib-hidden { display: none !important; }
+.formlib-visible { display: block !important; }
